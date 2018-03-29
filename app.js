@@ -23,6 +23,7 @@ app.use(helmet())
 // route
 const users = require('./routes/users');
 const cars = require('./routes/cars')
+const account = require('./routes/account')
 
 // middleWares
 app.use(logger('dev'));
@@ -31,6 +32,7 @@ app.use(bodyParser.json());
 // routes
 app.use('/users', users)
 app.use('/cars', cars)
+app.use('/accounts', account)
 
 // catch 404 and other errors
 app.use((req, res, next) => {

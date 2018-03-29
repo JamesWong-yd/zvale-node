@@ -6,7 +6,8 @@ module.exports = {
   // 所有用户
   index: async (req, res, next) => {
     const users = await User.find({})
-    res.status(200).json(exportFormat.list(users, users.length));
+    const usersLength = await User.count({})
+    res.status(200).json(exportFormat.list(users, usersLength));
   },
   // 创建用户
   newUser: async (req, res, next) => {
