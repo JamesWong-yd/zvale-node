@@ -15,7 +15,6 @@ module.exports = {
 
   // 创建账号
   newAccount: async (req, res, next) => {
-    // console.log(req.body)
     const newAccount = new Account(req.body)
     const account = await newAccount.save()
     res.status(201).json(exportFormat.normal(account))
