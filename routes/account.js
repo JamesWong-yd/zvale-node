@@ -4,8 +4,14 @@ const accountController = require('../controllers/account');
 const { validateParam, validateBody, schemas } = require('../helpers/routeHelper');
 
 router.route('/')
-  .get(accountController.getAccountList)
+  .get(accountController.getAccount)
   .post(validateBody(schemas.accountSchema), accountController.newAccount)
+
+router.route('/edit')
+  .post(accountController.editAccount)
+
+router.route('/list')
+  .get(accountController.getAccountList)
 
 router.route('/validate')
   .get(accountController.accountOnly)
