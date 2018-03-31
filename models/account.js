@@ -7,7 +7,7 @@ const accountSchema = new Schema({
   pwd: String,
   phone: Number,
   email: String,
-  state: Number,
+  state: Number, // 1 有效 0 失效
   permission:[{
     type: Schema.Types.ObjectId,
     ref: 'permission'
