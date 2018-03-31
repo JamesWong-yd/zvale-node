@@ -5,19 +5,15 @@ const Permission = require('../models/permission')
 
 module.exports = {
 
-  // 获取账号列表
+  // 获取账号列表(含状态查找)
   getAccountList: async (req, res, next) => {
     const {
-      account = "", name = "", page, limit
+      account = "", name = "", state , page, limit
     } = req.query
     let skip = (page - 1) * limit
-    let search = {
-      account: {
-        $regex: account
-      },
-      name: {
-        $regex: name
-      }
+    let search = {account: {$regex: account}, name: {$regex: name}}
+    if(state){
+      search.state = state
     }
     const accountListLength = await Account.count(search)
     const accountList = await Account.find(search, {
@@ -33,7 +29,8 @@ module.exports = {
   getAccount: async (req, res, next) => {
     const accountId = req.query.accountId
     const account = await Account.findById(accountId, {
-      pwd: 0, _id: 0
+      pwd: 0,
+      _id: 0
     })
     res.status(200).json(exportFormat.normal(account))
   },
@@ -52,7 +49,9 @@ module.exports = {
       params.pwd = md5(params.pwd)
       const newAccount = new Account(params)
       let account = await newAccount.save()
-      res.status(201).json(exportFormat.normal({accountId: account._id}, '创建成功'))
+      res.status(201).json(exportFormat.normal({
+        accountId: account._id
+      }, '创建成功'))
     }
   },
 
@@ -62,12 +61,12 @@ module.exports = {
     const accountOnly = await Account.findOne({
       account: params.account
     })
-    if (accountOnly && accountOnly._id === params.accountId ) {
+    if (accountOnly && accountOnly._id === params.accountId) {
       res.status(200).json(exportFormat.normal({
         result: false
       }, '修改失败，存在相同账号'))
-    }else{
-      if(params.pwd)params.pwd = md5(params.pwd)
+    } else {
+      if (params.pwd) params.pwd = md5(params.pwd)
       const accountId = params.accountId
       let updatedAccount = params
       const account = await Account.findByIdAndUpdate(accountId, updatedAccount, {

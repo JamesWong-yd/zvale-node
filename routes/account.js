@@ -9,7 +9,7 @@ router.route('/')
 
 router.route('/edit')
   .post(accountController.editAccount)
-
+  
 router.route('/list')
   .get(accountController.getAccountList)
 
