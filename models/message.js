@@ -9,7 +9,10 @@ const messageSchema = new Schema({
     type: Date,
     default: new Date()
   },
-  state: Number, // 1 有效 0 失效
+  state: {
+    type: Number,
+    default: 1,
+  }, // 1有效 0无效
   author: {
     type: Schema.Types.ObjectId,
     ref: 'account'
@@ -18,6 +21,7 @@ const messageSchema = new Schema({
     type: Date,
     default: new Date()
   },  // yyyyMMdd hh:mm:ss
+  removeTime: Date,
   receiver: [{
     type: Schema.Types.ObjectId,
     ref: 'msgState'

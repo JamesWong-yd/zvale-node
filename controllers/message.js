@@ -1,17 +1,35 @@
 const exportFormat = require('../middleware/exportFormat')
 const Account = require('../models/account')
-const { message, msgState } = require('../models/message')
+const {
+  message,
+  msgState
+} = require('../models/message')
 
 module.exports = {
   // 获取信息列表
   getMessageList: async (req, res, next) => {
-    const { title = '', sendDateStart = '', sendDateEnd = '', page, limit } = req.query
+    const {
+      title = '', sendDateStart = '', sendDateEnd = '', page, limit
+    } = req.query
     let skip = (page - 1) * limit
-    let search = { title: { $regex: title }, sendDate: { $gte: ISODate(sendDateStart), $lt: ISODate(sendDateEnd) } }
+    let search = {
+      title: {
+        $regex: title
+      }
+    }
+    if (sendDateStart && sendDateEnd) {
+      search.sendDate = {
+        $gte: sendDateStart,
+        $lt: sendDateEnd
+      }
+    }
     const messageListLength = await message.count(search)
     const messageList = await message.find(search, null, {
       skip: parseInt(skip),
       limit: parseInt(limit)
+    }).populate('author', {
+      name: 1,
+      _id: 0
     })
     res.status(200).json(exportFormat.list(messageList, messageListLength))
   },
@@ -27,5 +45,19 @@ module.exports = {
     res.status(201).json(exportFormat.normal({
       messageId: nmessage._id
     }, '发送成功'))
+  },
+
+  // 删除信息(状态为0)
+  removeMessage: async (req, res, next) => {
+    const {
+      id,
+      state
+    } = req.body
+    const nmessage = await message.findByIdAndUpdate(id, {
+      state: state
+    }, {
+      new: true
+    })
+    res.status(200).json(exportFormat.normal(nmessage, '更新成功'))
   }
 }
