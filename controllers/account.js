@@ -4,7 +4,6 @@ const Account = require('../models/account')
 const Permission = require('../models/permission')
 
 module.exports = {
-
   // 获取账号列表(含状态查找)
   getAccountList: async (req, res, next) => {
     const {

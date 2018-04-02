@@ -5,13 +5,20 @@ const messageSchema = new Schema({
   title: String,
   content: String,
   type: String,
-  sendDate: Date, // yyyyMMdd hh:mm:ss
+  sendDate: {
+    type: Date,
+    default: new Date()
+  },
+  state: Number, // 1 有效 0 失效
   author: {
     type: Schema.Types.ObjectId,
     ref: 'account'
   },
-  createTime: Date,  // yyyyMMdd hh:mm:ss
-  receiver:[{
+  createTime: {
+    type: Date,
+    default: new Date()
+  },  // yyyyMMdd hh:mm:ss
+  receiver: [{
     type: Schema.Types.ObjectId,
     ref: 'msgState'
   }]
@@ -19,8 +26,7 @@ const messageSchema = new Schema({
 
 const msgStateSchema = new Schema({
   read: Number, //1 未读   2 已读   3 垃圾箱
-  state: Number, // 1 有效 0 失效
-  readTime: Date, // yyyyMMdd hh:mm:ss
+  readTime: Number, // yyyyMMdd hh:mm:ss
   message: {
     type: Schema.Types.ObjectId,
     ref: 'message'
@@ -31,5 +37,10 @@ const msgStateSchema = new Schema({
   }
 })
 
-const account = mongoose.model('account', accountSchema)
-module.exports = account
+const message = mongoose.model('message', messageSchema)
+const msgState = mongoose.model('msgState', msgStateSchema)
+
+module.exports = {
+  message,
+  msgState
+}

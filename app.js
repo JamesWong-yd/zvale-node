@@ -20,9 +20,7 @@ app.all('*', function(req, res, next) {
 
 app.use(helmet())
 // route
-const users = require('./routes/users');
-const cars = require('./routes/cars')
-const account = require('./routes/account')
+const routerIndex = require('./routes/index')
 
 // middleWares
 app.use(logger('dev'));
@@ -30,9 +28,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // routes
-app.use('/users', users)
-app.use('/cars', cars)
-app.use('/accounts', account)
+app.use('/users', routerIndex.users)
+app.use('/cars', routerIndex.cars)
+app.use('/accounts', routerIndex.account)
+app.use('/messages', routerIndex.message)
 
 // catch 404 and other errors
 app.use((req, res, next) => {
