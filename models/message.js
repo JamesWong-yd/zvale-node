@@ -24,21 +24,27 @@ const messageSchema = new Schema({
   removeTime: Date,
   receiver: [{
     type: Schema.Types.ObjectId,
-    ref: 'msgState'
+    ref: 'account'
   }]
 });
 
 const msgStateSchema = new Schema({
-  read: Number, //1 未读   2 已读   3 垃圾箱
-  readTime: Number, // yyyyMMdd hh:mm:ss
-  message: {
+  read: {
+    type: Number,
+    default: 1
+  }, //1 未读   2 已读   3 垃圾箱
+  messageId: {
     type: Schema.Types.ObjectId,
     ref: 'message'
   },
-  account: {
+  accountId: {
     type: Schema.Types.ObjectId,
     ref: 'account'
-  }
+  },
+  readTime: {
+    type: Date,
+    default: ''
+  } // yyyyMMdd hh:mm:ss
 })
 
 const message = mongoose.model('message', messageSchema)
