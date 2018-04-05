@@ -36,18 +36,16 @@ module.exports = {
 
   // 根据信息id获取信息
   getMessage: async (req, res, next) => {
-    const messageId = req.query.messageId
-    const nmessage = await message.findById(messageId).populate('receiver',{
-      name: 1,
-      _id: 1
-    })
-    res.status(200).json(exportFormat.normal(nmessage))
+    
+    // res.status(200).json(exportFormat.normal(nmessage))
   },
 
   // 根据用户id获取信息列表
   getAccountMessage: async (req, res, next) => {
-    const messageList = await msgState.find({}).populate({path: 'messageId', 
-      match: {state: 0}
+    const accountId = req.query.accountId
+    const messageList = await msgState.find({ accountId: accountId }).populate({
+      path: 'messageId',
+      match: { state: 0 }
     })
     res.status(200).json(exportFormat.list(messageList, 10))
   },
@@ -61,14 +59,16 @@ module.exports = {
     params.receiver = params.receivers.split('##')
     const newMessage = new message(params)
     let nmessage = await newMessage.save()
-    var receiverLength = params.receiver.length
-    for(var i = 0;i<receiverLength;i++){
-      let newMsgState = new msgState({
+    const receiverLength = params.receiver.length
+    let receiverArr = []
+    for (var i = 0; i < receiverLength; i++) {
+      let newMsgState = {
         messageId: nmessage._id,
         accountId: params.receiver[i]
-      })
-      await newMsgState.save()
+      }
+      receiverArr.push(newMsgState)
     }
+    await msgState.insertMany(receiverArr)
     res.status(201).json(exportFormat.normal({
       messageId: nmessage._id
     }, '发送成功'))
@@ -76,15 +76,13 @@ module.exports = {
 
   // 删除信息(状态为0)
   removeMessage: async (req, res, next) => {
-    const {
-      id,
-      state
-    } = req.body
-    const nmessage = await message.findByIdAndUpdate(id, {
-      state: state
-    }, {
-      new: true
-    })
-    res.status(200).json(exportFormat.normal(nmessage, '更新成功'))
+    const { id } = req.body
+    // const nmessage = await message.findByIdAndUpdate(id, {
+    //   state: state
+    // }, {
+    //     new: true
+    // })
+    const newState = await msgState.update({messageId:id},{state: 0},{multi: true})
+    res.status(200).json(exportFormat.normal(newState, '更新成功'))
   }
 }

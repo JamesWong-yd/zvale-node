@@ -9,10 +9,6 @@ const messageSchema = new Schema({
     type: Date,
     default: new Date()
   },
-  state: {
-    type: Number,
-    default: 1,
-  }, // 1有效 0无效
   author: {
     type: Schema.Types.ObjectId,
     ref: 'account'
@@ -33,6 +29,10 @@ const msgStateSchema = new Schema({
     type: Number,
     default: 1
   }, //1 未读   2 已读   3 垃圾箱
+  state: {
+    type: Number,
+    default: 1,
+  }, // 1有效 0无效
   messageId: {
     type: Schema.Types.ObjectId,
     ref: 'message'
