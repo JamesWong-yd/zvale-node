@@ -34,20 +34,24 @@ module.exports = {
     res.status(200).json(exportFormat.list(messageList, messageListLength))
   },
 
-  // 根据信息id获取信息
-  getMessage: async (req, res, next) => {
-    
-    // res.status(200).json(exportFormat.normal(nmessage))
+  // 根据用户id获取信息数量
+  getAccountMessageCount: async (req, res, next) =>{
+    // const accountId = req.query.accountId
+    const accountId = '5ac3ab9004ef192988dd4bc9'
+    const messageCount = await msgState.count({ accountId: accountId ,state : 1})
+    res.status(200).json(exportFormat.normal({
+      count: messageCount
+    }, '获取成功'))
   },
 
   // 根据用户id获取信息列表
   getAccountMessage: async (req, res, next) => {
-    const accountId = req.query.accountId
-    const messageList = await msgState.find({ accountId: accountId }).populate({
-      path: 'messageId',
-      match: { state: 0 }
+    const accountId = '5ac3ab9004ef192988dd4bc9'
+    // const accountId = req.query.accountId
+    const messageList = await msgState.find({ accountId: accountId ,state : 1}).populate({
+      path: 'messageId'
     })
-    res.status(200).json(exportFormat.list(messageList, 10))
+    res.status(200).json(exportFormat.list(messageList, messageList.length))
   },
 
   // 创建信息
@@ -77,11 +81,11 @@ module.exports = {
   // 删除信息(状态为0)
   removeMessage: async (req, res, next) => {
     const { id } = req.body
-    // const nmessage = await message.findByIdAndUpdate(id, {
-    //   state: state
-    // }, {
-    //     new: true
-    // })
+    const nmessage = await message.findByIdAndUpdate(id, {
+      state: 0
+    }, {
+        new: true
+    })
     const newState = await msgState.update({messageId:id},{state: 0},{multi: true})
     res.status(200).json(exportFormat.normal(newState, '更新成功'))
   }

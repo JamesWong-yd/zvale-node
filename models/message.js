@@ -5,6 +5,10 @@ const messageSchema = new Schema({
   title: String,
   content: String,
   type: String,
+  state: {
+    type: Number,
+    default: 1,
+  },
   sendDate: {
     type: Date,
     default: new Date()
