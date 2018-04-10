@@ -34,6 +34,13 @@ module.exports = {
     res.status(200).json(exportFormat.list(messageList, messageListLength))
   },
 
+  // 根据msgId获取信息内容
+  getMessage: async (req, res, next) =>{
+    const messageId = req.query.messageId
+    const nmessage = await message.findById(messageId).populate('receiver')
+    res.status(200).json(exportFormat.normal(nmessage, '获取成功'))
+  },
+
   // 根据用户id获取信息数量
   getAccountMessageCount: async (req, res, next) =>{
     // const accountId = req.query.accountId

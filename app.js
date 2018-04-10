@@ -2,7 +2,7 @@ const express = require('express');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const helmet = require('helmet')
+const helmet = require('helmet');
 
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://zvale:zvale20180122.@120.79.203.126:9088/zvale')
@@ -11,8 +11,8 @@ const app = express();
 
 // allow orogin
 app.all('*', function(req, res, next) {  
-  res.header("Access-Control-Allow-Origin", "*");  
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");  
+  res.header("Access-Control-Allow-Origin", "http://localhost:8093");  
+  res.header("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept");  
   res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
   res.header("Content-Type", "application/json;charset=utf-8");  
   next();
