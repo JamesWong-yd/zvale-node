@@ -43,8 +43,8 @@ module.exports = {
 
   // 根据用户id获取信息数量
   getAccountMessageCount: async (req, res, next) =>{
-    // const accountId = req.query.accountId
-    const accountId = '5ac3ab9004ef192988dd4bc9'
+    const accountId = req.headers.uid
+    // const accountId = '5ac3ab9004ef192988dd4bc9'
     const messageCount = await msgState.count({ accountId: accountId ,state : 1})
     res.status(200).json(exportFormat.normal({
       count: messageCount
@@ -53,8 +53,7 @@ module.exports = {
 
   // 根据用户id获取信息列表
   getAccountMessage: async (req, res, next) => {
-    const accountId = '5ac3ab9004ef192988dd4bc9'
-    // const accountId = req.query.accountId
+    const accountId = req.headers.uid
     const messageList = await msgState.find({ accountId: accountId ,state : 1}).populate({
       path: 'messageId'
     })
@@ -66,7 +65,7 @@ module.exports = {
     let self = this
     let params = req.body
     // 假设
-    params.author = '5abe4ae8ec6f6f17a07b5d32'
+    params.author = req.headers.uid
     params.receiver = params.receivers.split('##')
     const newMessage = new message(params)
     let nmessage = await newMessage.save()

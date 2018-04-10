@@ -3,24 +3,28 @@ const logger = require('morgan');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
+const config = require('./baseconfig/config');
+const validateAuth = require('./auth/validateLogin')
 
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://zvale:zvale20180122.@120.79.203.126:9088/zvale')
+mongoose.connect(config.dbconfig)
 
 const app = express();
 
 // allow orogin
 app.all('*', function(req, res, next) {  
   res.header("Access-Control-Allow-Origin", "http://localhost:8093");  
-  res.header("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type, Accept");  
-  res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-  res.header("Content-Type", "application/json;charset=utf-8");  
+  res.header("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type");  
+  res.header("Access-Control-Allow-Methods","GET, POST, OPTIONS, PUT, PATCH, DELETE");
+  res.header("Content-Type", "application/json;charset=utf-8");
+  if(req.method==="OPTIONS") return res.status(200).json();
   next();
 }); 
 
 app.use(helmet())
 // route
 const routerIndex = require('./routes/index')
+const login = require('./auth/login')
 
 // middleWares
 app.use(logger('dev'));
@@ -28,6 +32,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // routes
+app.use('/login',login)
+app.use('*',validateAuth.authorVali)
 app.use('/users', routerIndex.users)
 app.use('/cars', routerIndex.cars)
 app.use('/accounts', routerIndex.account)

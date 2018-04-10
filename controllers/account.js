@@ -34,6 +34,17 @@ module.exports = {
     res.status(200).json(exportFormat.normal(account))
   },
 
+  // 验证账号
+  validateAccount: async (params) => {
+    if( !params._id || !params.pwd) return false
+    let search = {
+      _id: params._id,
+      pwd: params.pwd
+    }
+    const res = await Account.find(search)
+    return res
+  },
+
   // 创建账号
   newAccount: async (req, res, next) => {
     const params = req.value.body
@@ -106,5 +117,4 @@ module.exports = {
     })
     res.status(200).json(exportFormat.normal(account, '更新成功'))
   }
-
 }
