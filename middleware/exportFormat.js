@@ -17,5 +17,11 @@ module.exports = {
       msg: _msg
     }
     return _obj
+  },
+  not: (bool,msg) => {
+    return {
+      status: bool,
+      msg: msg
+    }
   }
 }

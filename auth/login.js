@@ -7,10 +7,10 @@ const jwtAes = require('./jwtAes')
 async function login(req, res, next) {
   let search = {
     account: req.body.account,
-    pwd: req.body.pwd
+    pwd: md5(req.body.pwd)
   }
   const account = await Account.find(search).populate('permission')
-  if (account[0]._id) {
+  if (account[0]) {
     const info = {
       cid: account[0]._id,
       pwd: account[0].pwd
@@ -20,13 +20,12 @@ async function login(req, res, next) {
       name: account[0].name,
       account: account[0].account,
       permission: account[0].permission,
+      state: account[0].state,
       token: jwtAes.encode(info)
     }
     res.status(200).json(exportFormat.normal(newAccount, '登陆成功'))
   } else {
-    res.status(200).json(exportFormat.normal({
-      result: false
-    }, '账号或密码错误！'))
+    res.status(200).json(exportFormat.not(false, '账号或密码错误！'))
   }
 }
 

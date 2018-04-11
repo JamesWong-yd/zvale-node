@@ -7,7 +7,7 @@ module.exports = {
   encode: function (info) {
     // 默认设置4小时有效时间
     if (!info.exp) {
-      info.exp = 1000 * 60 * 60 * 4 + new Date() * 1
+      info.exp = 1000 * 60 * 60 * 24 + new Date() * 1
     }
     // 转换成字符转
     const encodeInfo = JSON.stringify(info)
