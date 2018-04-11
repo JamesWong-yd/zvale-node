@@ -44,7 +44,6 @@ module.exports = {
   // 根据用户id获取信息数量
   getAccountMessageCount: async (req, res, next) =>{
     const accountId = req.headers.uid
-    // const accountId = '5ac3ab9004ef192988dd4bc9'
     const messageCount = await msgState.count({ accountId: accountId ,state : 1})
     res.status(200).json(exportFormat.normal({
       count: messageCount
