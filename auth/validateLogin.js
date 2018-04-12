@@ -7,13 +7,7 @@ module.exports = {
       let token = req.headers.authorization
       // 解密;
       let info = jwtAes.decoded(token)
-      // let info = {
-      //   cid: '5abe4ae8ec6f6f17a07b5d32',
-      //   pwd: '767e955464233667bfd855686a55b352',
-      //   exp: new Date() + 1
-      // }
       // 验证时间
-      console.log(info)
       if (info.exp && info.exp < new Date()) {
         return res.status(401).json({
           status: false,

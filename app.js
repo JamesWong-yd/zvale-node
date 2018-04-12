@@ -32,12 +32,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // routes
-app.use('/login',login)
-app.use('*',validateAuth.authorVali)
-app.use('/users', routerIndex.users)
-app.use('/cars', routerIndex.cars)
-app.use('/accounts', routerIndex.account)
-app.use('/messages', routerIndex.message)
+app.use('/bm/login',login)
+app.use('/bm/*',validateAuth.authorVali)
+app.use('/bm/users', routerIndex.users)
+app.use('/bm/cars', routerIndex.cars)
+app.use('/bm/accounts', routerIndex.account)
+app.use('/bm/messages', routerIndex.message)
 
 // catch 404 and other errors
 app.use((req, res, next) => {
