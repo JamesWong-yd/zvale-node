@@ -7,20 +7,20 @@ module.exports = {
   // 获取账号列表(含状态查找)
   getAccountList: async (req, res, next) => {
     const {
-      account = "", name = "", state , page, limit
+      account = "", name = "", state, page, limit
     } = req.query
     let skip = (page - 1) * limit
-    let search = {account: {$regex: account}, name: {$regex: name}}
-    if(state){
+    let search = { account: { $regex: account , $ne: 'admin'}, name: { $regex: name } }
+    if (state) {
       search.state = state
     }
     const accountListLength = await Account.count(search)
     const accountList = await Account.find(search, {
       pwd: 0
     }, {
-      skip: parseInt(skip),
-      limit: parseInt(limit)
-    })
+        skip: parseInt(skip),
+        limit: parseInt(limit)
+      })
     res.status(200).json(exportFormat.list(accountList, accountListLength))
   },
 
@@ -36,7 +36,7 @@ module.exports = {
 
   // 验证账号
   validateAccount: async (params) => {
-    if( !params._id || !params.pwd) return false
+    if (!params._id || !params.pwd) return false
     let search = {
       _id: params._id,
       pwd: params.pwd
@@ -110,11 +110,11 @@ module.exports = {
     const account = await Account.findByIdAndUpdate(id, {
       state: state
     }, {
-      fields: {
-        pwd: 0
-      },
-      new: true
-    })
+        fields: {
+          pwd: 0
+        },
+        new: true
+      })
     res.status(200).json(exportFormat.normal(account, '更新成功'))
   }
 }
