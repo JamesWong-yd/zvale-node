@@ -2,7 +2,6 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const baseSchema = new Schema({
-  author: {type: Schema.Types.ObjectId, ref: 'account' },
   creatTime: { type: Date, default: new Date() },
   state: { type: Number, default: 1 },// 1有效、0无效
   title: String,
@@ -10,8 +9,6 @@ const baseSchema = new Schema({
   description: String,
   registerNo: String,
   company: String,
-  headerType: String,
-  footerType: String,
   header: {
     type: Schema.Types.ObjectId,
     ref: 'header'
@@ -29,17 +26,14 @@ const headerSchema = new Schema({
     type: Date,
     default: new Date()
   },
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: 'account'
-  },
+  type: String,
   background: String,
   logoType: String,
   logoContent: String,
-  nav: {
+  nav: [{
     type: Schema.Types.ObjectId,
     ref: 'nav'
-  },
+  }],
   color: String,
   activeNavType: String,
   activeNavColor: String,
@@ -53,6 +47,7 @@ const footerSchema = new Schema({
     type: Date,
     default: new Date()
   },
+  type: String,
   author: {
     type: Schema.Types.ObjectId,
     ref: 'account'
