@@ -16,7 +16,7 @@ app.all('*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:8093");  
   res.header("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type");  
   res.header("Access-Control-Allow-Methods","GET, POST, OPTIONS, PUT, PATCH, DELETE");
-  res.header("Content-Type", "application/json;charset=utf-8");
+  // res.header("Content-Type", "application/json;charset=utf-8");
   if(req.method==="OPTIONS") return res.status(200).json();
   next();
 }); 
@@ -32,12 +32,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // routes
+app.use('/static',express.static('uploads'));
 app.use('/bm/login',login)
 app.use('/bm/*',validateAuth.authorVali)
 app.use('/bm/users', routerIndex.users)
 app.use('/bm/cars', routerIndex.cars)
 app.use('/bm/accounts', routerIndex.account)
 app.use('/bm/messages', routerIndex.message)
+app.use('/bm/upload', routerIndex.upload)
+app.use('/bm/base', routerIndex.base)
 
 // catch 404 and other errors
 app.use((req, res, next) => {

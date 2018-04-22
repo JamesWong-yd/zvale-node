@@ -30,14 +30,14 @@ const headerSchema = new Schema({
   background: String,
   logoType: String,
   logoContent: String,
-  nav: [{
-    type: Schema.Types.ObjectId,
-    ref: 'nav'
-  }],
   color: String,
   activeNavType: String,
   activeNavColor: String,
-  activeNavOthercolor: String
+  activeNavOtherColor: String,
+  state: {
+    type: Number,
+    default: 1
+  }
 })
 
 const footerSchema = new Schema({
