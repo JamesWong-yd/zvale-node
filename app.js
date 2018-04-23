@@ -13,7 +13,8 @@ const app = express();
 
 // allow orogin
 app.all('*', function(req, res, next) {  
-  res.header("Access-Control-Allow-Origin", "http://localhost:8093");  
+  res.header("Access-Control-Allow-Origin", "http://localhost:8093");
+  // res.header("Access-Control-Allow-Origin", "https://bm.zvale.com");
   res.header("Access-Control-Allow-Headers", "Authorization, Origin, X-Requested-With, Content-Type");  
   res.header("Access-Control-Allow-Methods","GET, POST, OPTIONS, PUT, PATCH, DELETE");
   // res.header("Content-Type", "application/json;charset=utf-8");
@@ -31,16 +32,22 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-// routes
+// routes noauth
 app.use('/static',express.static('uploads'));
 app.use('/bm/login',login)
+
+// routes auth
 app.use('/bm/*',validateAuth.authorVali)
+
+// routes authmust
 app.use('/bm/users', routerIndex.users)
 app.use('/bm/cars', routerIndex.cars)
 app.use('/bm/accounts', routerIndex.account)
 app.use('/bm/messages', routerIndex.message)
 app.use('/bm/upload', routerIndex.upload)
 app.use('/bm/base', routerIndex.base)
+app.use('/bm/static', routerIndex.static)
+app.use('/bm/log', routerIndex.static)
 
 // catch 404 and other errors
 app.use((req, res, next) => {

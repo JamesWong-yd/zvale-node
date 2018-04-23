@@ -47,11 +47,7 @@ const footerSchema = new Schema({
     type: Date,
     default: new Date()
   },
-  type: String,
-  author: {
-    type: Schema.Types.ObjectId,
-    ref: 'account'
-  }
+  type: String
 })
 
 const base = mongoose.model('base', baseSchema)

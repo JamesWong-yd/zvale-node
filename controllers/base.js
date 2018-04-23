@@ -1,7 +1,8 @@
 const exportFormat = require('../middleware/exportFormat')
-const { header } = require('../models/base')
+const { header, footer, base } = require('../models/base')
 
 module.exports = {
+  // 创建头部
   addHeader: async (req, res, next) => {
     const params = req.body
     const newHeader = new header(params)
@@ -11,14 +12,83 @@ module.exports = {
     }, '创建成功'))
   },
 
+  // 获取头部列表
   getHeader: async (req, res, next) => {
     const { page, limit } = req.query
     let skip = (page - 1) * limit
-    const headermodelList = await header.find({ state: 1 })
-    const headermodelLength = await header.count({ state: 1 }, null, {
+    const headermodelList = await header.find({ state: 1 }, null, {
       skip: parseInt(skip),
       limit: parseInt(limit)
     })
+    const headermodelLength = await header.count({ state: 1 })
     res.status(200).json(exportFormat.list(headermodelList, headermodelLength))
+  },
+
+  // 修改头部
+  editHeader: async (req, res, next) => {
+    const params = req.body
+    const headerId = params.headerId
+    const nheader = await header.findByIdAndUpdate(headerId, params, { new: true })
+    res.status(200).json(exportFormat.normal(nheader, '修改成功'))
+  },
+
+  // 删除头部
+  deleteHeader: async (req, res, next) => {
+    const headerId = req.body.headerId
+    const nheader = await header.findByIdAndUpdate(headerId, { state: 0 })
+    res.status(200).json(exportFormat
+      .normal('', '删除成功'))
+  },
+
+  // 创建尾部
+  addFooter: async (req, res, next) => {
+    const params = req.body
+    const newFooter = new footer(params)
+    const nfooter = await newFooter.save()
+    res.status(201).json(exportFormat.normal(nfooter, '创建成功'))
+  },
+
+  // 获取尾部列表
+  getFooter: async (req, res, next) => {
+    const { page, limit } = req.query
+    let skip = (page - 1) * limit
+    const footermodelList = await footer.find({ state: 1 }, null, {
+      skip: parseInt(skip),
+      limit: parseInt(limit)
+    })
+    const footermodelLength = await footer.count({ state: 1 })
+    res.status(200).json(exportFormat.list(footermodelList, footermodelLength))
+  },
+
+  // 更新尾部
+  editFooter: async (req, res, next) => {
+
+
+
+
+
+    res.status(200).json(exportFormat.normal('', '修改成功'))
+  },
+
+  // 删除尾部
+  deleteFooter: async (req, res, next) => {
+
+
+
+    res.status(200).json(exportFormat.normal('', '删除成功'))
+  },
+
+  // 基础模型关联
+  addBase: async (req, res, next) => {
+
+
+    res.status(200).json(exportFormat.normal('', '保存成功'))
+  },
+
+  // 基本参数
+  getBase: async (req, res, next) => {
+    const nbase = await base.find({ state: 1 }).populate(['header', 'footer'])
+    res.status(200).json(exportFormat.normal(nbase, '获取成功'))
   }
+
 }

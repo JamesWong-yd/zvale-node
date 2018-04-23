@@ -4,6 +4,8 @@ const account = require('./account')
 const message = require('./message')
 const upload = require('./upload')
 const base = require('./base')
+const static = require('./static')
+const log = require('./log')
 
 module.exports = {
   users,
@@ -11,5 +13,7 @@ module.exports = {
   account,
   message,
   upload,
-  base
+  base,
+  static,
+  log
 }
