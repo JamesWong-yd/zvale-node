@@ -26,7 +26,7 @@ async function login(req, res, next) {
     }
     // logw
     await Log.write({
-      type: 'create',
+      type: 'login',
       author: account[0]._id,
       title: '登陆系统',
       content: '登陆系统'

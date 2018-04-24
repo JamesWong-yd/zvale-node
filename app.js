@@ -47,7 +47,7 @@ app.use('/bm/messages', routerIndex.message)
 app.use('/bm/upload', routerIndex.upload)
 app.use('/bm/base', routerIndex.base)
 app.use('/bm/static', routerIndex.static)
-app.use('/bm/log', routerIndex.static)
+app.use('/bm/log', routerIndex.log)
 
 // catch 404 and other errors
 app.use((req, res, next) => {

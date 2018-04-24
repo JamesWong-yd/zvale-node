@@ -22,7 +22,7 @@ const baseSchema = new Schema({
 const headerSchema = new Schema({
   name: String,
   description: String,
-  creatTime: {
+  createTime: {
     type: Date,
     default: new Date()
   },

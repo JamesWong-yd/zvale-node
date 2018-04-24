@@ -2,6 +2,7 @@ const { log } = require('../models/log')
 
 // 类型
 const otype = {
+  login: '登陆',
   create: '创建',
   edit: '修改',
   delete: '删除',

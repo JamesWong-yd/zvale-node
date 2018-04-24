@@ -26,7 +26,8 @@ module.exports = {
     let skip = (page - 1) * limit
     const headermodelList = await header.find({ state: 1 }, null, {
       skip: parseInt(skip),
-      limit: parseInt(limit)
+      limit: parseInt(limit),
+      sort: {createTime: -1}
     })
     const headermodelLength = await header.count({ state: 1 })
     res.status(200).json(exportFormat.list(headermodelList, headermodelLength))
