@@ -2,6 +2,7 @@ const Account = require('../models/account')
 const router = require('express-promise-router')()
 const exportFormat = require('../middleware/exportFormat')
 const md5 = require('md5')
+const Log = require('../middleware/logwrite')
 const jwtAes = require('./jwtAes')
 
 async function login(req, res, next) {
@@ -23,6 +24,13 @@ async function login(req, res, next) {
       state: account[0].state,
       token: jwtAes.encode(info)
     }
+    // logw
+    await Log.write({
+      type: 'create',
+      author: account[0]._id,
+      title: '登陆系统',
+      content: '登陆系统'
+    })
     res.status(200).json(exportFormat.normal(newAccount, '登陆成功'))
   } else {
     res.status(200).json(exportFormat.not(false, '账号或密码错误！'))

@@ -2,6 +2,7 @@ const md5 = require('md5')
 const exportFormat = require('../middleware/exportFormat')
 const Account = require('../models/account')
 const Permission = require('../models/permission')
+const Log = require('../middleware/logwrite')
 
 module.exports = {
   // 获取账号列表(含状态查找)
@@ -10,7 +11,7 @@ module.exports = {
       account = "", name = "", state, page, limit
     } = req.query
     let skip = (page - 1) * limit
-    let search = { account: { $regex: account , $ne: 'admin'}, name: { $regex: name } }
+    let search = { account: { $regex: account, $ne: 'admin' }, name: { $regex: name } }
     if (state) {
       search.state = state
     }
@@ -59,6 +60,13 @@ module.exports = {
       params.pwd = md5(params.pwd)
       const newAccount = new Account(params)
       let account = await newAccount.save()
+      // log
+      await Log.write({
+        type: 'create',
+        author: req.headers.uid,
+        title: '创建账号',
+        content: '创建账号：' + account.account
+      })
       res.status(201).json(exportFormat.normal({
         accountId: account._id
       }, '创建成功'))
@@ -84,6 +92,12 @@ module.exports = {
           pwd: 0
         },
         new: true
+      })
+      await Log.write({
+        type: 'edit',
+        author: req.headers.uid,
+        title: '修改账号',
+        content: '修改账号：' + account.account
       })
       res.status(200).json(exportFormat.normal(account, '修改成功'))
     }
@@ -115,6 +129,13 @@ module.exports = {
         },
         new: true
       })
+    let logtype = state ? '生效' : '失效'
+    await Log.write({
+      type: 'edit',
+      author: req.headers.uid,
+      title: '账号' + logtype,
+      content: '修改账号：' + account.account+ ' ,'+ logtype
+    })
     res.status(200).json(exportFormat.normal(account, '更新成功'))
   }
 }

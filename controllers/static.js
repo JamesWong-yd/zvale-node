@@ -1,5 +1,6 @@
 const exportFormat = require('../middleware/exportFormat')
 const Static = require('./../models/static')
+const Log = require('../middleware/logwrite')
 
 module.exports = {
   // 获取资源
@@ -17,6 +18,13 @@ module.exports = {
   deleteStatic: async (req, res, next) => {
     const staticId = req.body.staticId
     const nstatic = await Static.findByIdAndUpdate(staticId, { state: 0 })
+    // logw
+    await Log.write({
+      type: 'create',
+      author: req.headers.uid,
+      title: '删除资源',
+      content: '删除资源：'+ nstatic.originalname
+    })
     res.status(200).json(exportFormat.normal('', '删除成功'))
   }
 }

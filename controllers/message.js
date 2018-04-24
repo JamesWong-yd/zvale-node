@@ -4,6 +4,7 @@ const {
   message,
   msgState
 } = require('../models/message')
+const Log = require('../middleware/logwrite')
 
 module.exports = {
   // 获取信息列表
@@ -78,6 +79,13 @@ module.exports = {
       receiverArr.push(newMsgState)
     }
     await msgState.insertMany(receiverArr)
+    // logw
+    await Log.write({
+      type: 'create',
+      author: req.headers.uid,
+      title: '发送信息',
+      content: '发送信息：'+ nmessage.title
+    })
     res.status(201).json(exportFormat.normal({
       messageId: nmessage._id
     }, '发送成功'))
@@ -92,6 +100,13 @@ module.exports = {
         new: true
     })
     const newState = await msgState.update({messageId:id},{state: 0},{multi: true})
-    res.status(200).json(exportFormat.normal(newState, '更新成功'))
+    // logw
+    await Log.write({
+      type: 'delete',
+      author: req.headers.uid,
+      title: '删除信息',
+      content: '删除信息：'+ nmessage.title
+    })
+    res.status(200).json(exportFormat.normal(newState, '删除成功'))
   }
 }
