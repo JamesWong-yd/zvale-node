@@ -15,7 +15,6 @@ const otype = {
 
 module.exports = {
   write: async function (content) {
-    
     // 默认
     let defaultContent = {
       title: content.title || '',

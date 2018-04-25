@@ -46,7 +46,7 @@ app.use('/bm/accounts', routerIndex.account)
 app.use('/bm/messages', routerIndex.message)
 app.use('/bm/upload', routerIndex.upload)
 app.use('/bm/base', routerIndex.base)
-app.use('/bm/static', routerIndex.static)
+app.use('/bm/resource', routerIndex.resource)
 app.use('/bm/log', routerIndex.log)
 
 // catch 404 and other errors

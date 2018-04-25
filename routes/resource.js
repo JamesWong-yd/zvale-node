@@ -1,6 +1,6 @@
 const router = require('express-promise-router')();
 
-const staticControllers = require('../controllers/static')
+const staticControllers = require('../controllers/resource')
 
 router.route('/')
  .get(staticControllers.getStaticList)

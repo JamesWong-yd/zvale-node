@@ -1,8 +1,9 @@
 const router = require('express-promise-router')()
 const path = require('path')
 const multer = require('multer')
-const Static = require('../models/static')
+const Static = require('../models/resource')
 const exportFormat = require('../middleware/exportFormat')
+const Log = require('../middleware/logwrite')
 
 // 实例
 const storage = multer.diskStorage({
@@ -32,6 +33,13 @@ const uploadController = async function (req, res) {
   }
   const newStatic = new Static(saveFile)
   const nStatic = await newStatic.save()
+  // logw
+  await Log.write({
+    type: 'create',
+    author: req.headers.uid,
+    title: '上传图片',
+    content: '上传图片：' + nStatic.originalname
+  })
   res.status(201).json(exportFormat.normal({
     path: nStatic.path
   }, '上传成功'))

@@ -4,7 +4,7 @@ const account = require('./account')
 const message = require('./message')
 const upload = require('./upload')
 const base = require('./base')
-const static = require('./static')
+const resource = require('./resource')
 const log = require('./log')
 
 module.exports = {
@@ -14,6 +14,6 @@ module.exports = {
   message,
   upload,
   base,
-  static,
+  resource,
   log
 }

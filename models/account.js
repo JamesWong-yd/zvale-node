@@ -3,15 +3,19 @@ const Schema = mongoose.Schema
 
 const accountSchema = new Schema({
   account: String,
-  name: String, 
+  name: String,
   pwd: String,
   phone: Number,
   email: String,
   state: Number, // 1 有效 0 失效
-  permission:[{
+  permission: [{
     type: Schema.Types.ObjectId,
     ref: 'permission'
-  }]
+  }],
+  createTime: {
+    type: Date,
+    default: new Date()
+  }
 });
 
 const account = mongoose.model('account', accountSchema)
