@@ -19,8 +19,8 @@ module.exports = {
     const staticList = await Static.find(search, null, {
       skip: parseInt(skip),
       limit: parseInt(limit),
-      sort: {createTime: -1}
-    }).populate('author')
+      sort: { createTime: -1 }
+    }).populate('author', { pwd: 0 })
     const staticLength = await Static.count(search)
     res.status(200).json(exportFormat.list(staticList, staticLength))
   },
