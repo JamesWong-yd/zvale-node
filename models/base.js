@@ -47,7 +47,24 @@ const footerSchema = new Schema({
     type: Date,
     default: new Date()
   },
-  type: String
+  type: String,
+  background: String,
+  navTitleColor: String,
+  navListColor: String,
+  navHoverColor: String,
+  company: String,
+  registerNo: String,
+  flex: Boolean,
+  phone: String,
+  phoneColor: String,
+  phoneSize: String,
+  workday: String,
+  workdayColor: String,
+  workdaySize: String,
+  other: String,
+  otherColor: String,
+  contactType: String,
+  image: String
 })
 
 const base = mongoose.model('base', baseSchema)
