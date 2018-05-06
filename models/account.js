@@ -14,7 +14,7 @@ const accountSchema = new Schema({
   }],
   createTime: {
     type: Date,
-    default: new Date()
+    default: Date.now
   }
 });
 

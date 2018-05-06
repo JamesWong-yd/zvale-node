@@ -21,7 +21,8 @@ module.exports = {
     if (sendDateStart && sendDateEnd) {
       search.sendDate = {
         $gte: sendDateStart,
-        $lt: sendDateEnd
+        $lt: sendDateEnd,
+        sort: { createTime: -1 }
       }
     }
     const messageListLength = await message.count(search)

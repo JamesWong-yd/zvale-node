@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const baseSchema = new Schema({
-  creatTime: { type: Date, default: new Date() },
+  creatTime: { type: Date, default: Date.now },
   state: { type: Number, default: 1 },// 1有效、0无效
   title: String,
   keywords: String,
@@ -24,7 +24,7 @@ const headerSchema = new Schema({
   description: String,
   createTime: {
     type: Date,
-    default: new Date()
+    default: Date.now
   },
   type: String,
   background: String,
@@ -45,7 +45,7 @@ const footerSchema = new Schema({
   description: String,
   creatTime: {
     type: Date,
-    default: new Date()
+    default: Date.now
   },
   type: String,
   background: String,

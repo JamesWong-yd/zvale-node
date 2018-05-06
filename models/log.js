@@ -11,7 +11,7 @@ const logSchema = new Schema({
   type: String, // 修改、创建、删除、绑定
   createTime: {
     type: Date,
-    default: new Date
+    default: Date.now
   }
 })
 

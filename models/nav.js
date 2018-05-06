@@ -9,7 +9,7 @@ const navSchema = new Schema({
   priority: Number,
   createTime: {
     type: Date,
-    default: new Date()
+    default: Date.now
   },
   state: String, // 1/0
   model: [{

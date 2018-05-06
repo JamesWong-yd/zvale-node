@@ -8,7 +8,7 @@ const staticSchema = new Schema({
   },
   createTime: {
     type: Date,
-    default: new Date()
+    default: Date.now
   },
   filename: String,
   originalname: String,

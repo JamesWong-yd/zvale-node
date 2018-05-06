@@ -6,9 +6,9 @@ const messageSchema = new Schema({
   content: String,
   type: String,
   state: { type: Number, default: 1},
-  sendDate: {type: Date, default: new Date()},
+  sendDate: {type: Date, default: Date.now},
   author: {type: Schema.Types.ObjectId, ref: 'account'},
-  createTime: {type: Date,default: new Date()},  // yyyyMMdd hh:mm:ss
+  createTime: {type: Date,default: Date.now},  // yyyyMMdd hh:mm:ss
   removeTime: Date,
   receiver: [{type: Schema.Types.ObjectId,ref: 'account'}]
 });
@@ -19,7 +19,7 @@ const msgStateSchema = new Schema({
   messageId: {type: Schema.Types.ObjectId,ref: 'message'},
   accountId: {type: Schema.Types.ObjectId,ref: 'account'},
   readTime: {type: Date,default: ''}, // yyyyMMdd hh:mm:ss
-  createTime: {type: Date,default: new Date() } // yyyyMMdd hh:mm:ss
+  createTime: {type: Date,default: Date.now } // yyyyMMdd hh:mm:ss
 })
 
 const message = mongoose.model('message', messageSchema)
